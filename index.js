@@ -37,9 +37,19 @@ function collectImports(imports, panelImports) {
   return Array.from(new Set(realImports));
 }
 
+function getPageName(data) {
+  if (data && data.moduleData) {
+    if (data.moduleData.name) {
+      return data.moduleData.name;
+    } else if (data.moduleData.id) {
+      return 'page' + data.moduleData.id;
+    }
+  }
+  return 'page';
+}
+
 const pluginHandler = async options => {
   let { config, filePath, data } = options;
-  const { value } = config;
   let imports = [];
   let result = {
     errorList: []
@@ -47,7 +57,7 @@ const pluginHandler = async options => {
 
   let pageDirectory = filePath;
   try {
-    const pageName = 'page' + (value || (data.moduleData && data.moduleData.id));
+    const pageName = getPageName(data);
     pageDirectory = path.resolve(filePath, `src/pages/${pageName}`);
     fs.ensureDirSync(pageDirectory);
   } catch (error) {
