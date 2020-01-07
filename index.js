@@ -12,7 +12,7 @@ const path = require('path');
 function replaceLocalImports(panelValue, imports, fileName) {
   let replacement = '../';
   if (fileName === 'index') {
-    replacement = './component/';
+    replacement = './components/';
   }
   imports.forEach(item => {
     const newItem = item.replace('./', replacement);
