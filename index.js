@@ -10,11 +10,12 @@ const fs = require('fs-extra');
 const path = require('path');
 
 function replaceLocalImports(panelValue, imports, fileName) {
+  let replacement = '../';
   if (fileName === 'index') {
-    return panelValue;
+    replacement = './component/';
   }
   imports.forEach(item => {
-    const newItem = item.replace('./', '../');
+    const newItem = item.replace('./', replacement);
     panelValue = panelValue.replace(item, newItem);
   });
   return panelValue;
@@ -72,7 +73,7 @@ const pluginHandler = async options => {
       const fileName = panelName.split('.')[0];
       const fileType = panelName.split('.')[1];
       if (fileName !== 'index') {
-        filePath = path.resolve(pageDirectory, fileName, `index.${fileType}`);
+        filePath = path.resolve(pageDirectory, 'components', fileName, `index.${fileType}`);
         errorMsg = `已存在名为 ${panelName} 的模块，跳过代码生成`;
       } else {
         filePath = path.resolve(pageDirectory, `index.${fileType}`);
