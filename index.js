@@ -72,11 +72,11 @@ const pluginHandler = async options => {
       let errorMsg = '';
       const fileName = panelName.split('.')[0];
       const fileType = panelName.split('.')[1];
-      if (fileName !== 'index') {
+      if (fileName !== 'index' && fileName !== 'context') {
         filePath = path.resolve(pageDirectory, 'components', fileName, `index.${fileType}`);
         errorMsg = `已存在名为 ${panelName} 的模块，跳过代码生成`;
       } else {
-        filePath = path.resolve(pageDirectory, `index.${fileType}`);
+        filePath = path.resolve(pageDirectory, `${fileName}.${fileType}`);
         errorMsg = `已存在名为 ${panelName} 的主文件，跳过代码生成`;
       }
       if (!fs.pathExistsSync(filePath)) {
