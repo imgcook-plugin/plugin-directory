@@ -42,10 +42,8 @@ function getCodeDirectory(projectType, projectPath, pageName) {
       break;
     }
     default: {
-      // 应用级别的代码不覆盖生成
-      codeDirectory = genUniqueDirectory(unique => {
-        return path.resolve(projectPath, `src/pages/${pageName + unique}`);
-      });
+      // 默认当成模块导出
+      codeDirectory = path.resolve(projectPath, pageName);
       break;
     }
   }
