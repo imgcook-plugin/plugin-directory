@@ -19,7 +19,7 @@ function getCodeDirectory(projectType, projectPath, pageName) {
   let codeDirectory = '';
   switch (projectType.type) {
     case PROJECT_TYPE.Rax1MultiApp.type:
-    case PROJECT_TYPE.Rax1SPAApp: {
+    case PROJECT_TYPE.Rax1SPAApp.type: {
       // 应用级别的代码不覆盖生成
       codeDirectory = genUniqueDirectory(unique => {
         return path.resolve(projectPath, `src/pages/${pageName + unique}`);
