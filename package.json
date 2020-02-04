@@ -1,6 +1,6 @@
 {
   "name": "@imgcook/plugin-directory",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "plugin directory to export page code",
   "main": "index.js",
   "scripts": {
