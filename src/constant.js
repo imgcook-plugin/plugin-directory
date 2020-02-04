@@ -16,7 +16,7 @@ const PROJECT_TYPE = {
   },
   // rax 组件
   Rax1Comp: {
-    type: 'rax1.spaapp',
+    type: 'rax1.component',
     jsType: 'jsx',
     cssType: 'css'
   },
