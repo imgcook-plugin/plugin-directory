@@ -1,4 +1,5 @@
 const fs = require('fs-extra');
+const parentDirs = require('parent-dirs');
 const path = require('path');
 const { PROJECT_TYPE } = require('./constant');
 
@@ -17,12 +18,14 @@ function genUniqueDirectory(callback) {
 
 function getCodeDirectory(projectType, projectPath, pageName) {
   let codeDirectory = '';
+  let codePageName = pageName;
   switch (projectType.type) {
     case PROJECT_TYPE.Rax1MultiApp.type:
     case PROJECT_TYPE.Rax1SPAApp.type: {
       // 应用级别的代码不覆盖生成
       codeDirectory = genUniqueDirectory(unique => {
-        return path.resolve(projectPath, `src/pages/${pageName + unique}`);
+        codePageName = pageName + unique;
+        return path.resolve(projectPath, `src/pages/${codePageName}`);
       });
       break;
     }
@@ -47,7 +50,10 @@ function getCodeDirectory(projectType, projectPath, pageName) {
       break;
     }
   }
-  return codeDirectory;
+  return {
+    codeDirectory,
+    codePageName
+  };
 }
 
 function getProjectType(projectPath) {
@@ -101,9 +107,30 @@ function optiFileType(fileType, isTS, projectType) {
   return fileType;
 }
 
+function findClosestFilePath(baseDir, fileName) {
+  try {
+    let filePath = '';
+    let dirs = parentDirs(baseDir) || [];
+    let length = Math.min(dirs.length, 5);
+    let index = 0;
+    while (index < length) {
+      let curPath = path.join(dirs[index], fileName);
+      if (fs.pathExistsSync(curPath)) {
+        filePath = curPath;
+        break;
+      }
+      index++;
+    }
+    return filePath;
+  } catch (e) {
+    return '';
+  }
+}
+
 module.exports = {
   PROJECT_TYPE,
   getProjectType,
   getCodeDirectory,
+  findClosestFilePath,
   optiFileType
 };

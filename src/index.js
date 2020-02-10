@@ -59,7 +59,7 @@ function updatePackageJSON(projectPath, imports) {
   const packages = imports.map(item => {
     return item.match(/\'(.*)?\'/g)[0].slice(1, -1);
   });
-  const packageJSONPath = path.join(projectPath, 'package.json');
+  const packageJSONPath = util.findClosestFilePath(projectPath, 'package.json');
   if (!fs.pathExistsSync(packageJSONPath)) {
     return false;
   }
@@ -118,9 +118,11 @@ const pluginHandler = async options => {
   const isTSProject = fs.pathExistsSync(path.join(projectPath, 'tsconfig.json'));
   const projectType = util.getProjectType(projectPath);
   let codeDirectory = '';
-  const pageName = getPageName(data);
+  let pageName = getPageName(data);
   try {
-    codeDirectory = util.getCodeDirectory(projectType, projectPath, pageName);
+    const dirInfo = util.getCodeDirectory(projectType, projectPath, pageName);
+    codeDirectory = dirInfo.codeDirectory;
+    pageName = dirInfo.codePageName;
     fs.ensureDirSync(codeDirectory);
   } catch (error) {
     codeDirectory = projectPath;
