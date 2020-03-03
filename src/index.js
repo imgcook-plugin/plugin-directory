@@ -136,6 +136,7 @@ const pluginHandler = async options => {
       let filePath = '';
       const fileName = panelName.split('.')[0];
       const fileType = util.optiFileType(panelName.split('.')[1], isTSProject, projectType);
+      panelName = `${fileName}.${fileType}`;
       if (fileName !== 'index' && fileName !== 'context') {
         filePath = path.resolve(codeDirectory, 'components', fileName, `index.${fileType}`);
       } else {
